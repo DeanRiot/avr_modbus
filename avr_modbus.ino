@@ -232,23 +232,12 @@ int main(void)
     blink_LED(DATA_LED);
   }
 }
-/*UART DATA REGISTER IS EMPTY*****************************************************************/
-ISR(USART_UDRE_vect)
-{
-  USART_Transmit(sendDataPtr[numOfDataSended]);
-  numOfDataSended++;
-  if (numOfDataSended == numOfDataToSend)
-  {
-   UCSR0B &= ~((1 << UDRIE0));
-    readyToExchange = 1;
-  }
-}
 /*BYTE RECEIVED INTERRUPT******************************************************************/
 ISR(USART_RX_vect)
 {
-  *receivedDataPtr = USART_Receive();
-  receivedDataPtr++;
-  numOfDataReceived++;
+ *receivedDataPtr = USART_Receive();
+      receivedDataPtr++;
+      numOfDataReceived++;  
   if (numOfDataReceived == numOfDataToReceive)
   {
     UCSR0B &= ~((1 << RXCIE0) | (1 << RXEN0));
